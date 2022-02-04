@@ -11,7 +11,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CodeMgmtService {
-
+  //코드관리용 api
   private userUrl = '/api/code';
 
   constructor(private http:HttpClient) { }
