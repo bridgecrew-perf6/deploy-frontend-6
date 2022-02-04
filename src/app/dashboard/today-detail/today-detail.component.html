@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>
+  {{ data.user.name }} 님
+  <span *ngIf="data.complete == 'N'" class="complete" style="color: blue">
+    진행 중
+  </span>
+  <span *ngIf="data.complete == 'Y'" class="complete" style="color: gray">
+    완료
+  </span>
+  <span *ngIf="data.complete == 'E'" class="complete" style="color: red">
+    초과
+  </span>
+</h2>
+
+<div mat-dialog-content class="content">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>제목</th>
+        <th>시작 날짜</th>
+        <th>종료 날짜</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of scheduleList">
+        <td>{{ item.scheduleTitle }}</td>
+        <td>{{ item.startDate }}</td>
+        <td>{{ item.endDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="btns">
+  <div mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>취소</button>
+  </div>
+  <div mat-dialog-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/schedule', data.user.id, data.complete, 'dash']"
+      mat-dialog-close
+    >
+      스케쥴로 이동
+    </button>
+  </div>
+</div>

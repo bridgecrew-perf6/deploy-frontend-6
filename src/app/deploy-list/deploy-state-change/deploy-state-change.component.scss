@@ -1,0 +1,38 @@
+.title-outline{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialog-outline{
+    padding: 1em;
+}
+
+.button-outline-dialog{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content{
+    width: 100%;
+}
+
+.content-extra{
+    height: 7em;
+}
+
+
+#state-content{
+    width: 100%;
+    height: 75px;
+    padding: 0.3em 0em 0.3em 0.3em;
+    border: 1px solid #d5d5db;
+    overflow-y: scroll;
+}
+
+.content-title{
+    font-size: 0.8em;
+}
+
+.content-outline{
+    margin: 0.5em 0 0.5em 0;
+}

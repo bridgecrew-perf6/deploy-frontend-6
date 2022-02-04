@@ -1,0 +1,126 @@
+<h2 mat-dialog-title>{{ data.name }} 님 일정 등록</h2>
+<div mat-dialog-content class="content">
+  <form [formGroup]="form">
+    <mat-form-field appearance="standard">
+      <mat-label>시작 날짜</mat-label>
+      <input
+        matInput
+        [matDatepicker]="start"
+        formControlName="startDate"
+        #startDate
+        (dateChange)="dateCheck()"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker #start></mat-datepicker>
+      <mat-error>시작 날짜를 입력해주세요</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <input
+        matInput
+        type="time"
+        formControlName="startTime"
+        #startTime
+        (change)="dateCheck()"
+      />
+      <mat-error>시간을 입력해주세요</mat-error>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="standard">
+      <mat-label>종료 날짜</mat-label>
+      <input
+        matInput
+        [matDatepicker]="end"
+        formControlName="endDate"
+        [min]="form.controls.startDate.value"
+        #endDate
+        (dateChange)="dateCheck()"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker #end></mat-datepicker>
+      <mat-error *ngIf="form.controls.endDate.hasError('required')"
+        >종료 날짜를 입력해주세요
+      </mat-error>
+      <mat-error
+        *ngIf="
+          form.controls.endDate.hasError('matDatepickerMin') ||
+          form.controls.endDate.hasError('dateError')
+        "
+        >종료 날짜는 시작 날짜 이후여야합니다
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <input
+        matInput
+        type="time"
+        formControlName="endTime"
+        #endTime
+        (change)="dateCheck()"
+      />
+      <mat-error>시간을 입력해주세요</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox
+      color="primary"
+      formControlName="allDay"
+      (click)="disable()"
+      style="margin-left: 15px"
+      #allDay
+      (change)="dateCheck()"
+      >종일
+    </mat-checkbox>
+    <br />
+
+    <mat-form-field appearance="standard" class="field">
+      <mat-label>일정 제목</mat-label>
+      <input
+        formControlName="scheduleTitle"
+        matInput
+        #scheduleTitle
+        maxlength="100"
+        cdkFocusInitial
+      />
+      <mat-error *ngIf="form.controls.scheduleTitle.hasError('required')">
+        제목을 입력해주세요
+      </mat-error>
+      <mat-error *ngIf="form.controls.scheduleTitle.hasError('pattern')">
+        처음과 마지막에 공백을 입력할 수 없습니다
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="field">
+      <mat-label>일정 내용</mat-label>
+      <textarea
+        class="textarea"
+        matInput
+        formControlName="scheduleContent"
+        #scheduleContent
+        maxlength="500"
+      ></textarea>
+    </mat-form-field>
+
+    <div mat-dialog-actions class="btns">
+      <button mat-raised-button color="primary" mat-dialog-close>취소</button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        (click)="
+          onSubmit(
+            startDate,
+            startTime,
+            endDate,
+            endTime,
+            allDay,
+            scheduleTitle,
+            scheduleContent
+          )
+        "
+      >
+        등록
+      </button>
+    </div>
+  </form>
+</div>

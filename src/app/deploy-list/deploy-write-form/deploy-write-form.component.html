@@ -1,0 +1,69 @@
+<vex-secondary-toolbar id="secondary-tool" current="배포이력 등록">
+    <vex-breadcrumbs id="breadcrumbs" [crumbs]="['Deploy','Deploy-Write']"></vex-breadcrumbs>
+    <!-- <div class="clock-container">
+        <div class="time">{{date}}</div>
+    </div> -->
+</vex-secondary-toolbar>
+
+<div id="deployWrap">
+    <div class="p-6" fxLayout="column" fxLayoutGap="16px">
+        <form [formGroup]="deployForm" class="form-outline">
+            <div class="title-outline">
+                <mat-form-field class="block" appearance="standard" class="title-input">
+                    <mat-label>제목</mat-label>
+                    <input #deployTitle formControlName="deployTitle" maxlength="33" matInput>
+                    <mat-error *ngIf="deployForm.get('deployTitle').hasError('required')">제목을 입력해 주세요</mat-error>
+                    <mat-error *ngIf="deployForm.get('deployTitle').hasError('pattern')">앞글자의 공백을 채우거나 특수문자를 제거해주세요</mat-error>
+                </mat-form-field>  
+                <mat-form-field appearance="standard" style="float: right;">
+                    <mat-label>배포 예정일</mat-label>
+                    <input matInput [matDatepicker]="fromDatePicker" formControlName="expectedDate" [min]="currentDate" readonly/>
+                    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromDatePicker></mat-datepicker>
+                    <mat-error *ngIf="deployForm.get('expectedDate').hasError('required')">배포 예정일을 선택해주세요</mat-error>
+                </mat-form-field>
+            </div>
+                <div id="contentWrap">
+                    <quill-editor #deployContent @fadeInUp formControlName="deployContent" [styles]="{ flex: '1 1 auto' }" >
+                    </quill-editor>
+                </div>
+            <mat-form-field class="block" appearance="standard">
+                <mat-label>portal</mat-label>
+                <textarea cdkTextareaAutosize cdkAutosizeMinRows="3" 
+                #portalScript formControlName="portalScript" matInput></textarea>
+                <mat-error *ngIf="deployForm.get('portalScript').hasError('pattern')">스크립트를 올바르게 입력해 주세요</mat-error>
+            </mat-form-field>
+            <mat-form-field class="block" appearance="standard">
+                <mat-label>tbwapp</mat-label>
+                <textarea cdkTextareaAutosize cdkAutosizeMinRows="3" 
+                #tbwappScript formControlName="tbwappScript" matInput></textarea>
+                <mat-error *ngIf="deployForm.get('tbwappScript').hasError('pattern')">스크립트를 올바르게 입력해 주세요</mat-error>
+            </mat-form-field>
+            <mat-form-field class="block" appearance="standard">
+                <mat-label>center</mat-label>
+                <textarea cdkTextareaAutosize cdkAutosizeMinRows="3" 
+                #centerScript formControlName="centerScript" matInput></textarea>
+                <mat-error *ngIf="deployForm.get('centerScript').hasError('pattern')">스크립트를 올바르게 입력해 주세요</mat-error>
+            </mat-form-field>
+
+            <div id = "fileWrap">
+                <div>
+                    <input #fileUploader type="file" multiple id="file" (change)="selectFiles($event)" style="display: none;" accept=".jar">
+                    <label id="fileLabel" for="file">파일 선택</label>
+                </div>
+                <div *ngIf="display=='block'" id="fileBox">
+                    <ul *ngFor = "let fileList of files">
+                        <li *ngFor="let file of fileList" ><button  (click)="close($event.srcElement.parentElement.textContent)" class="close_btn">x</button>{{file.name}}</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="button-outline">
+                <button class="button-group" (click)="cancel()" mat-flat-button color="primary" id="cancelBtn">취소</button>
+                <button class="button-group" (click)="send(deployForm,deployTitle,portalScript,tbwappScript,centerScript)" mat-flat-button color="primary">등록</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="loader" [ngClass]="status=='wait'?'on':'off'"></div>

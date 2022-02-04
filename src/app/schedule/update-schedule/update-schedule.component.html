@@ -1,0 +1,240 @@
+<h2 mat-dialog-title *ngIf="data.complete != 'Y'">
+  <span>{{ data.team }} 팀</span>의 일정
+  <span>
+    <small>< {{ data.name }} 님 ></small>
+  </span>
+</h2>
+<h2 mat-dialog-title *ngIf="data.complete == 'Y'">
+  {{ data.team }} 팀의 완료된 일정
+  <span>
+    <small>< {{ data.name }} 님 ></small>
+  </span>
+</h2>
+<div mat-dialog-content class="content">
+  <form [formGroup]="form">
+    <mat-form-field appearance="standard">
+      <mat-label>시작 날짜</mat-label>
+      <input
+        matInput
+        [matDatepicker]="start"
+        formControlName="startDate"
+        #startDate
+        (dateChange)="dateCheck()"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker
+        #start
+        [disabled]="data.disable || data.complete == 'Y'"
+      ></mat-datepicker>
+      <mat-error>시작 날짜를 입력해주세요</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <input
+        matInput
+        type="time"
+        formControlName="startTime"
+        #startTime
+        [readonly]="data.disable"
+        (change)="dateCheck()"
+      />
+      <mat-error>시간을 입력해주세요</mat-error>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="standard">
+      <mat-label>종료 날짜</mat-label>
+      <input
+        matInput
+        [matDatepicker]="end"
+        formControlName="endDate"
+        [min]="form.controls.startDate.value"
+        #endDate
+        (dateChange)="dateCheck()"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker
+        #end
+        [disabled]="data.disable || data.complete == 'Y'"
+      ></mat-datepicker>
+      <mat-error *ngIf="form.controls.endDate.hasError('required')"
+        >종료 날짜를 입력해주세요
+      </mat-error>
+      <mat-error
+        *ngIf="
+          form.controls.endDate.hasError('matDatepickerMin') ||
+          form.controls.endDate.hasError('dateError')
+        "
+        >종료 날짜는 시작 날짜 이후여야합니다
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <input
+        matInput
+        type="time"
+        formControlName="endTime"
+        #endTime
+        (change)="dateCheck()"
+        [readonly]="data.disable"
+      />
+      <mat-error>시간을 입력해주세요</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox
+      color="primary"
+      formControlName="allDay"
+      (click)="disable()"
+      style="margin-left: 15px"
+      #allDay
+      (change)="dateCheck()"
+      >종일
+    </mat-checkbox>
+    <br />
+
+    <mat-form-field appearance="standard" class="field">
+      <mat-label>일정 제목</mat-label>
+      <input
+        formControlName="scheduleTitle"
+        #scheduleTitle
+        matInput
+        maxlength="100"
+        [readonly]="data.disable"
+      />
+      <mat-error *ngIf="form.controls.scheduleTitle.hasError('required')">
+        제목을 입력해주세요
+      </mat-error>
+      <mat-error *ngIf="form.controls.scheduleTitle.hasError('pattern')">
+        처음과 마지막에 공백을 입력할 수 없습니다
+      </mat-error>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="standard" class="field">
+      <mat-label>일정 내용</mat-label>
+      <textarea
+        class="textarea"
+        matInput
+        formControlName="scheduleContent"
+        #scheduleContent
+        maxlength="500"
+        [readonly]="data.disable"
+      >
+          {{ schedule.scheduleContent }}
+      </textarea>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="standard"
+      class="field"
+      [hidden]="data.complete == 'Y' || data.disable"
+    >
+      <mat-label>수정/삭제 사유</mat-label>
+      <textarea
+        class="textarea"
+        matInput
+        formControlName="updateReason"
+        #updateReason
+        maxlength="500"
+      >
+      </textarea>
+    </mat-form-field>
+
+    <div *ngIf="historyLength > 0" class="update">
+      <span (click)="viewHistory()" class="md-18">수정 이력</span>
+      <img
+        src="/assets/img/demo/arrow.png"
+        class="arrow"
+        (click)="viewHistory()"
+      />
+    </div>
+    <table *ngIf="toggle" class="table">
+      <thead>
+        <tr>
+          <td>수정 일시</td>
+          <td>수정 사유</td>
+          <td colspan="2">수정 내역</td>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of history" class="tbody">
+        <tr>
+          <td rowspan="4">{{ item.regdate }}</td>
+          <td rowspan="4">{{ item.updateReason }}</td>
+          <td>제목</td>
+          <td>{{ item.scheduleTitle }}</td>
+        </tr>
+        <tr>
+          <td>내용</td>
+          <td>{{ item.scheduleContent }}</td>
+        </tr>
+        <tr>
+          <td>시작</td>
+          <td>{{ item.startDate }}</td>
+        </tr>
+        <tr>
+          <td>종료</td>
+          <td>{{ item.endDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="btns">
+      <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close>취소</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="
+            onUpdate(
+              'complete',
+              startDate,
+              startTime,
+              endDate,
+              endTime,
+              allDay,
+              scheduleTitle,
+              scheduleContent,
+              updateReason
+            )
+          "
+          [hidden]="data.complete == 'Y' || data.disable"
+        >
+          완료
+        </button>
+      </div>
+
+      <div mat-dialog-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onDelete()"
+          [hidden]="data.complete == 'Y' || data.disable"
+        >
+          삭제
+        </button>
+        <button
+          mat-raised-button
+          (click)="
+            onUpdate(
+              'update',
+              startDate,
+              startTime,
+              endDate,
+              endTime,
+              allDay,
+              scheduleTitle,
+              scheduleContent,
+              updateReason
+            )
+          "
+          [hidden]="data.complete == 'Y' || data.disable"
+          color="primary"
+        >
+          수정
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,114 @@
+<vex-page-layout>
+	<vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.container]="layoutCtrl.value === 'boxed'"
+         [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+         class="w-full flex flex-col sm:flex-row justify-between">
+        <div>
+            <h1 class="title mt-0 mb-1">코드관리</h1>
+            <vex-breadcrumbs [crumbs]="['Code Management']"></vex-breadcrumbs>
+	    </div>
+    </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+                             [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+						     class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+    	<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+            <div id="searchBox" [formGroup]="codeSearchForm" (keyup.enter)="searchCode()">
+            <mat-form-field class="select-field" appearance="standard">
+                <mat-label>분류</mat-label>
+                <mat-select required formControlName="type">
+                    <mat-option value="codeId">코드아이디</mat-option>
+                    <mat-option value="codeName">코드이름</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="search-field" appearance="standard" >
+                <mat-label>검색어를 입력해 주세요.</mat-label>
+                <input formControlName="keyword" matInput>
+            </mat-form-field>
+            <button mat-raised-button
+            class="search_btn"
+            color="primary"
+            (keyup.enter)="searchCode()"
+            (click)="searchCode()">
+            검색
+            </button>
+            <button mat-raised-button
+            class="initialize_btn"
+            color="primary"
+            (click)="initializeForm()">
+            초기화
+            </button>
+            <button mat-raised-button
+            class="register_btn"
+            color="primary" 
+            (click)="openInsertCodeDialog()">
+            코드등록
+            </button>
+            </div>
+		</div>
+	    </div>    
+    <table id="codeTable" class="table table-stripd">
+        <thead>
+        <tr>
+            <th style="width:10%"></th>
+            <th style="width:15%">코드 아이디</th>
+            <th style="width:30%">코드 이름</th>
+            <th style="width:15%">부모 코드 아이디</th>
+            <th style="width:10%">사용여부</th>
+            <th style="width:10%">순서</th>
+            <th style="width:5%"></th>
+            <th style="width:5%"></th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let codeMgmt of codeMgmts; let i = index">
+        <tr>
+            <td align="center" class="toggle_btn">
+                <a (click)="toggleChildCodeList(i,codeMgmt.codeId)" class="expand-row" *ngIf="!hideme[i] && codeMgmt.parentCodeId == null">  
+                <img src="../../assets/img/plus.png" width="24"/>  
+                </a>
+                <a class="expand-row" *ngIf="hideme[i] && codeMgmt.parentCodeId == null" (click)="hideme[i] = !hideme[i]"> 
+                <img src="../../assets/img/minus.png" width="24"/>
+                </a>
+            </td>
+            <td>{{codeMgmt.codeId}}</td>
+            <td>{{codeMgmt.codeName}}</td>
+            <td>{{codeMgmt.parentCodeId}}</td>
+            <td>{{codeMgmt.codeUseYN}}</td>
+            <td>{{codeMgmt.dsplOrder}}</td>
+            <td><button (click)="openUpdateCodeDialog(codeMgmt.codeId, codeMgmt.parentCodeId)"><img src="../../assets/img/edit.png" width="16"/></button></td>
+            <td><button (click)="deleteCode(codeMgmt.codeId)"><img src="../../assets/img/delete.png" width="16"/></button></td>
+        </tr>
+        <tr [hidden]="!hideme[i]">
+            <td align="center"></td>
+            <td colspan="15">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>코드 아이디</th>
+                            <th>코드 이름</th>
+                            <th>부모 코드 아이디</th>
+                            <th>사용여부</th>
+                            <th>순서</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>  
+                        <tr *ngFor="let childCodeMgmtInformation of childCodeMgmtInformations[i]">
+                            <td>{{childCodeMgmtInformation.codeId}}</td>
+                            <td>{{childCodeMgmtInformation.codeName}}</td>
+                            <td>{{childCodeMgmtInformation.parentCodeId}}</td>
+                            <td>{{childCodeMgmtInformation.codeUseYN}}</td>
+                            <td>{{childCodeMgmtInformation.dsplOrder}}</td>
+                            <td><button (click)="openUpdateCodeDialog(childCodeMgmtInformation.codeId, childCodeMgmtInformation.parentCodeId)"><img src="../../assets/img/edit.png" width="16"/></button></td>
+                            <td><button (click)="deleteCode(childCodeMgmtInformation.codeId)"><img src="../../assets/img/delete.png" width="16"/></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</vex-page-layout-content>
+</vex-page-layout>

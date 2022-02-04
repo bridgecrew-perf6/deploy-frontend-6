@@ -1,0 +1,129 @@
+#noticeBox{
+	width: 80%;
+	margin:0 auto 0 auto;
+	border-top: 1px solid #d5d5db;
+}
+#noticeHeader{
+	 overflow: hidden;
+	 box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+#noticeHeader dt, #noticeHeader dd{
+	height: 50px;
+	padding:15px 7px;
+}
+#noticeHeader dd{
+	background-color: #fff;
+}
+#noticeHeader dt{
+	width: 100px;
+	text-align: center;
+	color:white;
+	background-color: rgb(var(--color-primary));
+}
+#attachments{
+	font-weight: bold;
+	color: rgb(var(--color-primary));
+}
+
+#noticeHeader .notice_dt{
+	border-top:none;
+}
+dt,dl{
+	float: left;
+	font-size: 14px;
+}
+#noticeTitle{
+	width: 70%;
+}
+#noticeTitle dt{
+	border-bottom:1px solid #d5d5db;
+}
+#noticeRegdate{
+	width:25%;
+}
+#noticeTitle dd{
+	margin-left: 100px;
+	border-bottom:1px solid #d5d5db;
+}
+
+#noticeRegdate dd{
+	text-align: center;
+}
+#noticeWriter{
+	width: 30%;
+	
+}
+#noticeWriter dt{
+	border-bottom:1px solid #d5d5db;
+}
+#noticeWriter dd{
+	border-bottom:1px solid #d5d5db;
+}
+#viewCount{
+	
+	width: 20%;
+}
+#viewCount dt{
+	border-top: none;
+}
+#viewCount dd{
+	text-align: center;
+}
+#noticeWriter dd{
+	text-align: center;
+}
+#phone{
+	width: 30%;
+}
+#phone dt{
+	border-top: none;
+}
+#phone dd{
+	text-align: center;
+}
+#noticeUpdate{
+	width: 25%;
+}
+#noticeUpdate dt{
+	border-top:none;
+}
+#noticeUpdate dd{
+	text-align: center;
+}
+#fileBox{
+	width: 100%;
+	height: 165px;
+	margin: 20px auto 0 auto;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	overflow-y: scroll;
+	background-color: #fff;
+}
+#fileBox ul{
+	margin-left: 10px;
+	margin-top:10px;
+}
+#fileBox li{
+	margin-top:10px;
+}
+#contentBox{
+	margin-top: 20px;
+	width: 100%;
+	padding: 15px 15px;
+	min-height: 300px;
+	background-color: #fff;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+#noticeFooter{
+	margin-top:30px;
+	width: 100%;
+	height: 100px;
+
+}
+.btn{
+	float: right;
+	margin: 0 5px;
+}
+li img{
+	display: inline;
+	margin-right: 5px;
+}	

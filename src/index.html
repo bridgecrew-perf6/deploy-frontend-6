@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>vtw</title>
+    <base href="/" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="assets/bootstrap.min.css"
+    />
+  </head>
+    <style>
+      @font-face {
+      font-family: 'Roboto-Black';
+      src: url('assets/font/Roboto/Roboto-Black.ttf') format('ttf');
+      font-weight: normal;
+      font-style: normal;
+      }
+
+      @font-face {
+      font-family: 'Roboto-Light';
+      src: url('assets/font/Roboto/Roboto-Light.ttf') format('ttf');
+      font-weight: normal;
+      font-style: normal;
+      }
+
+      @font-face {
+      font-family: 'Roboto-Regular';
+      src: url('assets/font/Roboto/Roboto-Regular.ttf') format('ttf');
+      font-weight: normal;
+      font-style: normal;
+      }
+
+      @font-face {
+      font-family: 'Roboto-Medium';
+      src: url('assets/font/Roboto/Roboto-Medium.ttf') format('ttf');
+      unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
+      }
+
+      @font-face {
+      font-family: 'NanumMyeongjo-Regular';
+      src: url('assets/font/Nanum_Myeongjo/NanumMyeongjo-Regular.ttf') format('ttf');
+      }
+      body
+      {
+      font-family: "Roboto-Medium","NanumMyeongjo-Regular";
+      font-style: normal;
+      }
+
+      #vex-splash-screen {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #13293d;
+        z-index: 99999;
+        pointer-events: none;
+      }
+
+      #vex-splash-screen > .wrapper {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+      }
+
+      @-webkit-keyframes ball-scale-multiple {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+          opacity: 0;
+        }
+
+        5% {
+          opacity: 1;
+        }
+
+        100% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      @keyframes ball-scale-multiple {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+          opacity: 0;
+        }
+
+        5% {
+          opacity: 1;
+        }
+
+        100% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      .ball-scale-multiple {
+        position: relative;
+        -webkit-transform: translateY(-30px);
+        transform: translateY(-30px);
+      }
+
+      .ball-scale-multiple > div:nth-child(2) {
+        -webkit-animation-delay: -0.4s;
+        animation-delay: -0.4s;
+      }
+
+      .ball-scale-multiple > div:nth-child(3) {
+        -webkit-animation-delay: -0.2s;
+        animation-delay: -0.2s;
+      }
+
+      .ball-scale-multiple > div {
+        background-color: #fff;
+        border-radius: 100%;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        position: absolute;
+        left: -30px;
+        top: 0;
+        opacity: 0;
+        margin: 0;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: ball-scale-multiple 1s 0s linear infinite;
+        animation: ball-scale-multiple 1s 0s linear infinite;
+      }
+      /* 2021/05/04 드롭다운 위치 수정(나혁진) */
+      .popover {
+        top: 40px;
+        left: -275px;
+      }
+      /**
+      20210511 정진하 ngx-pagination css 수정
+      */
+      .ngx-pagination .pagination-next a::after,
+      .ngx-pagination .pagination-next.disabled::after {
+        content: "";
+        color: transparent;
+        background-image: url("assets/img/right.png");
+        background-size: 24px 24px;
+        width: 24px;
+        height: 24px;
+        display: block;
+        position: relative;
+        top: 0;
+      }
+      .ngx-pagination .pagination-next a,
+      .ngx-pagination .pagination-next.disabled,
+      .ngx-pagination .pagination-previous a,
+      .ngx-pagination .pagination-previous.disabled {
+        top: 0;
+        position: relative;
+        background-color: transparent;
+      }
+      
+      .ngx-pagination .pagination-previous a::before,
+      .ngx-pagination .pagination-previous.disabled::before {
+        content: "";
+        color: transparent;
+        background-image: url("assets/img/left.png");
+        background-size: 24px 24px;
+        width: 24px;
+        height: 24px;
+        display: block;
+        position: relative;
+        
+        top: 0;
+      }
+      .ngx-pagination.responsive {
+        position: relative;
+      }
+      .ngx-pagination
+        li:not(.pagination-previous, .pagination-next, .small-screen) {
+        position: relative;
+        border-radius: 50%;
+        font-weight: 600;
+      }
+      /*previous, next button css*/
+      .ngx-pagination
+        li
+        a:not(.pagination-previous, .pagination-next, .small-screen) {
+        position: relative;
+        background-color: transparent;
+      }
+
+      .page_size_box select {
+        width: 80px;
+        height: 36px;
+        outline: none;
+        border: 3px solid rgba(59, 130, 246, 0.5);
+        border-radius: 10px;
+        font-weight: 600;
+        color: #757575;
+        font-size: 16px;
+      }
+      #item > select {
+        background-color: rgb(245, 245, 248);
+      }
+      .page_size_box option {
+        height: 36px;
+        outline: none;
+      }
+      /*안쓰는 헤더 툴바 안보이게 함 */
+      .-mx-1 > div:not(.-mx-1 > div:last-child) {
+        display: none;
+      }
+      /*sample excel download css */
+      .xlsx_way {
+        background-color: #E040FB;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 4px;
+        border-radius: 4px;
+        font-weight: bold;
+        color: #424242;
+      }
+      .excel_js_way{
+        background-color: #AA00FF;
+        padding: 4px;
+        border-radius: 4px;
+        font-weight: bold;
+        color: #424242;
+      }
+      #userList, #userListPagination {
+        font-weight: bold;
+        color: #424242;
+        margin-bottom: 10px;
+      }
+      .sample_excel_download_thead, .sample_pagination_thead {
+        text-align: center;
+        border: 2px solid;
+        border-radius: 20%;
+        color: #424242;
+        border-color: #81D4FA;
+      }
+      .sample_excel_download_tbody>tr>td, .sample_pagination_tbody>tr>td {
+        margin-bottom: 10px;
+        padding: 4px;
+      }
+    </style>
+  <body dir="ltr">
+    <div id="vex-splash-screen">
+      <div class="wrapper">
+        <div class="ball-scale-multiple">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <vex-root></vex-root>
+  </body>
+</html>

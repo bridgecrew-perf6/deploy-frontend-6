@@ -1,0 +1,122 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.container]="layoutCtrl.value === 'boxed'"
+             [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+             class="w-full flex flex-col sm:flex-row justify-between"> 
+            <div>
+                <h1 class="title mt-0 mb-1" id="title-extra">배포이력관리</h1>
+                <vex-breadcrumbs [crumbs]="['Deploy']"></vex-breadcrumbs>
+            </div>
+            <div id="teamWrap">
+                <button  (click)="selectDeploy()" [ngClass]="teamName=='전체'?'on':'off'">전체</button>
+                <button *ngFor="let team of teams" (click)="selectTeamDeploy(team)" [ngClass]="teamName==team.codeName?'on':'off'" >{{team.codeName}}</button>
+            </div>
+        </div>
+    </vex-page-layout-header>
+
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+                             [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+                             class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <div class="deploy-search" [formGroup]="searchGroup" (keyup.enter)="search(searchGroup)"> 
+                        <mat-form-field class="select-field" appearance="standard">
+                                <mat-label>분류</mat-label>
+                                <mat-select (selectionChange)="selectValue($event.value)" formControlName="searchCategory">
+                                    <mat-option value="all">전체</mat-option>
+                                    <mat-option value="title">제목</mat-option>
+                                    <mat-option value="writer">작성자</mat-option>
+                                    <mat-option value="fileName">파일이름</mat-option>
+                                    <mat-option value="deployDate">작성일</mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                        <mat-form-field 
+                            class="search-field" 
+                            appearance="standard"
+                            *ngIf="category == null||category == 'all'||category == 'writer'||category == 'title'||category == 'fileName'">
+                            <mat-label>검색어를 입력해 주세요.</mat-label>
+                            <input #searchValue matInput formControlName="keyword">       
+                        </mat-form-field>
+                        
+                        <mat-form-field 
+                            class="search-date-field"  
+                            appearance="standard"
+                            *ngIf="category == 'deployDate'">
+                            <input matInput [matDatepicker]="fromDatePicker" formControlName="startDate" [max]="searchGroup.controls.endDate.value" readonly/>
+                            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDatePicker></mat-datepicker>
+                            <mat-label>시작날짜</mat-label>
+                        </mat-form-field>
+                        
+                        <mat-form-field 
+                            class="search-date-field"  
+                            appearance="standard"
+                            *ngIf="category == 'deployDate'">
+                            <input matInput [matDatepicker]="fromDatePicker" formControlName="endDate" [min]="searchGroup.controls.startDate.value" readonly/>
+                            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDatePicker></mat-datepicker>
+                            <mat-label>마지막날짜</mat-label>
+                        </mat-form-field>
+
+
+                        <button color="primary" mat-raised-button (click)="search(searchGroup)" (keyup.enter)="search(searchGroup)" class="search_btn">검색</button>  
+                        <button mat-raised-button class="search_btn" color="primary" (click)="initializeForm()">초기화 </button>
+                        <button color="primary" mat-raised-button routerLink="default-path-list" class="list_btn">경로확인</button>
+                        <button color="primary" mat-raised-button routerLink="default-path" class="register_btn">경로등록</button>
+                        <button color="primary" mat-raised-button routerLink="deploy-write" class="write_btn">작성</button>   
+                </div>
+            </div>
+        </div>
+
+        <div id="boardWrap">
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">번호</th>
+                        <th style="width: 30%;">제목</th>
+                        <th style="width: 10%;">작성자</th>
+                        <th style="width: 5%;">팀</th>
+                        <th style="width: 15%;">작성일</th>                
+                        <th style="width: 10%;">배포상태</th>
+                        <th style="width: 20%;">다운로드</th>
+                    </tr>
+                </thead>        
+                <tbody>
+                    <tr *ngFor="let deploy of deploys | paginate: {itemsPerPage: itemsPerPage , currentPage: p, totalItems: totalItems}">
+                        <td #deployNo routerLink="{{deploy.deployNo}}">{{deploy.deployNo}}</td>
+                        <td id="Script_List" #listTitle routerLink="{{deploy.deployNo}}" id={{deploy.deployTitle}}>{{deploy.deployTitle}}</td>
+                        <td routerLink="{{deploy.deployNo}}">{{deploy.writer}}</td>
+                        <td routerLink="{{deploy.deployNo}}">{{deploy.team}}</td>
+                        <td routerLink="{{deploy.deployNo}}">{{deploy.deployDate}}</td>
+                        <td>
+                            <button mat-raised-button class="stateBtn" color="accent" (click)="deployDialog(deploy.deployNo,deploy.stateReason,deploy.deployState,deploy.id)" *ngIf="deploy.deployState == '배포완료'">{{deploy.deployState}}</button>
+                            <button mat-raised-button class="stateBtn" color="primary" (click)="deployDialog(deploy.deployNo,deploy.stateReason,deploy.deployState,deploy.id)" *ngIf="deploy.deployState == '배포준비'">{{deploy.deployState}}</button>
+                        </td>
+                        <td style="display: flex;">
+                            <div class="fileBtn" *ngIf="deploy.name !== null">
+                                <a href="{{ ngEncode(url+deploy.name) }}">zip</a>
+                            </div>
+                            <button *ngIf="deploy.name !== null"  color="primary" mat-raised-button (click)="exportToExcel(listTitle.id,deploy.deployNo)">excel</button>
+                        </td>                                
+                    </tr>
+                    
+                </tbody>        
+            </table>
+        </div>
+        
+        <div class="paginate-box">   
+            <pagination-controls (pageChange)="getPage(p =$event)" previousLabel="" nextLabel="" responsive="true">
+            </pagination-controls>
+        </div>
+        
+        <div id="item">
+            Items per Page:
+            <select (change)="handlePageSizeChange($event)">
+                <option *ngFor="let itemsPerPage of itemsPerPages" >
+                {{ itemsPerPage }}
+                </option>
+            </select>
+        </div>
+    </vex-page-layout-content>
+
+</vex-page-layout>

@@ -1,0 +1,176 @@
+<vex-secondary-toolbar current="Dashboard">
+  <vex-breadcrumbs
+    [crumbs]="['Dashboards']"
+    class="flex-auto"
+  ></vex-breadcrumbs>
+</vex-secondary-toolbar>
+<div class="schedule">
+  <h4>오늘의 일정</h4>
+  <mat-form-field appearance="standard">
+    <mat-label>팀</mat-label>
+    <mat-select [formControl]="teamControl" (selectionChange)="changeTeam()">
+      <mat-option *ngFor="let team of teamList" [value]="team.codeName">
+        {{ team.codeName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>진행</th>
+          <th>완료</th>
+          <th>초과</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of teamUser">
+          <td>{{ user.name }}</td>
+          <td
+            *ngIf="user.countN > 0"
+            (click)="todayDetail(user, 'N')"
+            class="count"
+          >
+            {{ user.countN }}
+          </td>
+          <td *ngIf="user.countN <= 0">
+            {{ user.countN }}
+          </td>
+          <td
+            *ngIf="user.countY > 0"
+            (click)="todayDetail(user, 'Y')"
+            class="count"
+          >
+            {{ user.countY }}
+          </td>
+          <td *ngIf="user.countY <= 0">
+            {{ user.countY }}
+          </td>
+          <td
+            *ngIf="user.countE > 0"
+            (click)="todayDetail(user, 'E')"
+            class="count"
+          >
+            {{ user.countE }}
+          </td>
+          <td *ngIf="user.countE <= 0">
+            {{ user.countE }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="notice">
+  <div class="card w-full" fxLayout="column">
+    <div class="border-b py-4 px-6" fxLayout="row" fxLayoutAlign="start center">
+      <h2 class="m-0 title" fxFlex="auto">공지사항</h2>
+    </div>
+
+    <table
+      id="noticeTable"
+      class="w-full"
+      [dataSource]="dataSource"
+      mat-table
+      matSort
+    >
+      <ng-container matColumnDef="title">
+        <mat-header-cell class="notice_title" *matHeaderCellDef
+          >제목</mat-header-cell
+        >
+        <mat-cell
+          class="notice_title"
+          routerLink="/notice/{{ notice.boardNo }}"
+          *matCellDef="let notice"
+          >{{ notice.title }}<img *ngIf="notice.count>0" width="15" height="15"  src="assets/img/clip.png"></mat-cell
+        >
+      </ng-container>
+
+      <ng-container matColumnDef="writer">
+        <mat-header-cell class="notice_writer" *matHeaderCellDef
+          >작성자</mat-header-cell
+        >
+        <mat-cell
+          class="notice_writer"
+          routerLink="/notice/{{ notice.boardNo }}"
+          *matCellDef="let notice"
+          >{{ notice.writer }}</mat-cell
+        >
+      </ng-container>
+
+      <ng-container matColumnDef="team">
+        <mat-header-cell class="notice_team" *matHeaderCellDef
+          >팀</mat-header-cell
+        >
+        <mat-cell
+          class="notice_team"
+          routerLink="/notice/{{ notice.boardNo }}"
+          *matCellDef="let notice"
+          >{{ notice.team }}</mat-cell
+        >
+      </ng-container>
+
+      <ng-container matColumnDef="regdate">
+        <mat-header-cell class="notice_regdate" *matHeaderCellDef
+          >등록일</mat-header-cell
+        >
+        <mat-cell
+          class="notice_regdate"
+          routerLink="/notice/{{ notice.boardNo }}"
+          *matCellDef="let notice"
+          >{{ notice.regdate }}</mat-cell
+        >
+      </ng-container>
+
+      <mat-header-row
+        class="list_header"
+        *matHeaderRowDef="['title', 'writer', 'team', 'regdate']"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="let notice; columns: ['title', 'writer', 'team', 'regdate']"
+      >
+      </mat-row>
+    </table>
+  </div>
+</div>
+
+<div class="deploy">
+  <h4>배포목록</h4>
+  <mat-form-field appearance="standard">
+    <mat-label>팀</mat-label>
+    <mat-select [formControl]="deployTeamControl">
+      <mat-option *ngFor="let team of deployTeamList" [value]="team.codeName" (click)="changeDeployTeam(team.codeName)">
+        {{ team.codeName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 55%;">제목</th>
+          <th style="width: 15%;">배포상태</th>
+          <th style="width: 15%;">작성자</th>
+          <th style="width: 15%;">작성일</th>
+        </tr>
+      </thead>
+      <tbody *ngIf = "deploysLength != 0 ">
+        <tr *ngFor="let deploy of deploys">
+          <td (click)="showDeployDialog(deploy.deployNo)" style="cursor: pointer; color: #4b8f6ab6 ;">{{deploy.deployTitle}}</td>
+          <td>{{deploy.deployState}}</td>
+          <td>{{deploy.writer}}</td>
+          <td>{{deploy.deployDate}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf = "deploysLength == 0 ">
+        <tr>
+          <td colspan="4" style="height: 50px;">해당 팀은 등록된 배포 목록이 없습니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

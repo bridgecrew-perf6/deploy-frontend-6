@@ -1,0 +1,97 @@
+<h2 mat-dialog-title *ngIf="isInsertMode">코드 등록</h2>
+<h2 mat-dialog-title *ngIf="!isInsertMode">코드 수정</h2>
+    <mat-dialog-content [formGroup]="form">
+        <mat-checkbox
+                color="primary"
+                style="margin-left: 15px"
+                formControlName="isParentCode"
+                #isParentCode
+                (click)="disableParentCodeId()"
+        >최상위코드
+        </mat-checkbox>
+        <br/>
+        <mat-form-field appearance="standard">
+        <mat-label>코드 아이디</mat-label>
+        <input
+            matInput
+            formControlName="codeId"
+            #codeId
+            required
+            (keyup)="checkCodeId(codeId.value)"
+        />
+        <mat-error *ngIf="form.get('codeId').hasError('required')">코드 아이디를 입력해 주세요.</mat-error>
+        <mat-error *ngIf="form.get('codeId').hasError('pattern')">공백을 입력할 수 없습니다.</mat-error>
+        <mat-error *ngIf="form.get('codeId').hasError('checkError')">중복된 코드 아이디입니다.</mat-error>
+        <mat-error *ngIf="form.get('codeId').hasError('byteSizeError')"></mat-error>
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="standard">
+        <mat-label>코드 이름</mat-label>
+        <input
+            matInput
+            formControlName="codeName" 
+            #codeName
+            required
+            (keyup)="checkCodeName(codeName.value)"
+        />
+        <mat-error *ngIf="form.get('codeName').hasError('required')">코드 이름을 입력해 주세요.</mat-error>
+        <mat-error *ngIf="form.get('codeName').hasError('pattern')">공백을 입력할 수 없습니다.</mat-error>
+        <mat-error *ngIf="form.get('codeName').hasError('byteSizeError')"></mat-error>
+        </mat-form-field>
+        <br/>
+        <mat-form-field class="select-field" appearance="standard">
+            <mat-label>부모코드아이디</mat-label>
+            <mat-select required formControlName="parentCodeId">
+                <mat-option *ngFor="let codeMgmt of codeMgmts" [value]="codeMgmt.codeId">
+                    {{codeMgmt.codeId}}
+                </mat-option>
+            </mat-select>
+        <mat-error *ngIf="form.get('parentCodeId').hasError('required')">최상위 코드 아이디를 선택해 주세요.</mat-error> 
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="standard">
+        <mat-label>순서</mat-label>
+        <input
+            matInput
+            (keyup)="checkDsplOrder(dsplOrder.value,form.value.isParentCode,form.value.parentCodeId)"
+            formControlName="dsplOrder"
+            #dsplOrder
+            required
+        />
+        <mat-error *ngIf="form.get('dsplOrder').hasError('pattern')">숫자만 입력해 주세요.</mat-error>
+        <mat-error *ngIf="form.get('dsplOrder').hasError('required')">순서를 입력해 주세요.</mat-error>
+        <mat-error *ngIf="f.dsplOrder.hasError('checkError')">
+            동일 순서를 입력할 수 없습니다.
+        </mat-error>
+        </mat-form-field>
+        <br/>
+        <mat-checkbox
+            color="primary"
+            style="margin-left: 15px"
+            formControlName="isInUse"
+            #isInUse
+        >사용여부
+        </mat-checkbox>
+    </mat-dialog-content>
+    <mat-dialog-actions class="btns">
+      <button mat-raised-button
+              color="primary" 
+              mat-dialog-close
+      >취소
+      </button>
+      <button mat-raised-button
+              color="primary"
+              *ngIf="isInsertMode"
+              type="button"
+              (click)="onSubmit()"
+      >생성
+      </button>
+      <button mat-raised-button
+              color="primary"
+              *ngIf="!isInsertMode"
+              type="button"
+              (click)="onSubmit()"
+     >수정
+     </button>
+    </mat-dialog-actions>
+

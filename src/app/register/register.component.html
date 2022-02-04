@@ -1,0 +1,95 @@
+
+<vex-scrollbar>
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <div @fadeInUp class="card overflow-hidden w-full max-w-xs">
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="fill-current text-center">
+        <img class="w-16" src="assets/img/logo/logo.gif" style="width: 150px;height: 40px;">
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <h2 class="title m-0">회원가입</h2>
+      <h4 class="body-2 text-secondary m-0">아래의 폼을 작성해 주세요.</h4>
+    </div>
+
+    <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px" >
+      <div fxFlex="auto" fxLayout="column">
+
+        
+
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>ID</mat-label>
+          <input #id formControlName="id" matInput required (keyup)="checkId(id.value)" maxlength="20">
+          <mat-error *ngIf="form.get('id').hasError('required')">아이디를 입력해 주세요.</mat-error>
+          <mat-error *ngIf="form.get('id').hasError('checkError')">중복된 아이디 입니다.</mat-error>
+          <mat-error *ngIf="form.get('id').hasError('pattern')">첫글자는 공백을 제외해서 입력해 주세요.</mat-error>
+          
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>Password</mat-label>
+          <input #password [type]="inputType" formControlName="password" matInput required maxlength="20" >
+          <mat-error *ngIf="form.get('password').hasError('required')">비밀번호를 입력해 주세요.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>Password (Confirm)</mat-label>
+          <input #passwordConfirm [type]="inputType" formControlName="passwordConfirm"   matInput required >
+           <mat-error>비밀번호가 일치하지 않습니다.</mat-error>
+        </mat-form-field>
+         
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>Name</mat-label>
+          <input #name formControlName="name" matInput required maxlength="5">
+           <mat-error *ngIf="form.get('name').hasError('required')">이름을 입력해 주세요.</mat-error>
+           <mat-error *ngIf="form.get('name').hasError('pattern')">첫글자는 공백을 제외해서 입력해 주세요.</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field fxFlex="grow" appearance="standard">
+            <mat-label>Position</mat-label>
+            <mat-select #position formControlName="position">
+              <mat-option *ngFor="let position of positionList" value="{{position.codeName}}" >{{position.codeName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('position').hasError('required')">직급을 선택해 주세요.</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field fxFlex="grow" appearance="standard">
+            <mat-label>E-Mail</mat-label>
+            <input #email formControlName="email" matInput required>
+            <mat-error *ngIf="form.get('email').hasError('required')">이메일을 입력해 주세요.</mat-error>
+            <mat-error *ngIf="form.get('email').hasError('email')">이메일 형식에 맞게 입력해 주세요.</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field fxFlex="grow" appearance="standard">
+            <mat-label>Phone (ex:010-1234-5678)</mat-label>
+            <input #phone formControlName="phone" matInput required maxlength="13">
+            <mat-error *ngIf="form.get('phone').hasError('required')">핸드폰 번호를 입력해 주세요.</mat-error>
+            <mat-error *ngIf="form.get('phone').hasError('pattern')">핸드폰 번호를 형식에 맞게 입력해 주세요.</mat-error>
+          </mat-form-field>
+          
+          <mat-form-field fxFlex="grow" appearance="standard">
+            <mat-label>Team</mat-label>
+            <mat-select #team formControlName="team">
+              <mat-option *ngFor="let team of teamList" value="{{team.codeName}}" >{{team.codeName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('team').hasError('required')">팀을 선택해 주세요.</mat-error>
+        </mat-form-field>
+
+      
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-checkbox  formControlName="check" class="caption"><a>약관에 동의합니다.</a></mat-checkbox>
+      </div>
+      <button (click)="send(form,id,password,passwordConfirm,name,position,email,phone,team)" color="primary" mat-raised-button type="button" >
+        회원가입
+      </button>
+      <p class="text-secondary text-center">
+        계정이 있으십니까?<br/>
+        <a [routerLink]="['/login']">여기를 클릭하세요</a>
+      </p>
+    </div>
+  </div>
+</div>
+</vex-scrollbar>

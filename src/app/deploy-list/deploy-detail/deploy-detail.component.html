@@ -1,0 +1,116 @@
+<vex-page-layout>
+	<vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.container]="layoutCtrl.value === 'boxed'"
+             [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+             class="w-full flex flex-col sm:flex-row justify-between header-extra">
+          <div>
+                <h1 class="title mt-0 mb-1">배포이력 스크립트</h1>
+                <vex-breadcrumbs [crumbs]="['Deploy','Deploy-Script']"></vex-breadcrumbs>
+            </div>
+        </div>
+      </vex-page-layout-header>
+
+      <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+      [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+      class="-mt-6">
+        <div class="card overflow-auto -mt-16 card-title">
+            <div class="bg-app-bar px-6 h-16 sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <div>    
+                    <div class="deploy-content">
+                        <p class="deploy-title">제목</p>  
+                        <h6 #listTitle id={{deploy.deployTitle}}>{{deploy.deployTitle}}</h6>
+                    </div>     
+                </div>
+                <div class="btn-outline">
+                    <div class="fileBtn"  *ngIf="zipName !== undefined"> 
+                        <a href="{{ ngEncode(url+zipName) }}">zip</a>
+                    </div>
+                    <button *ngIf="zipName !== undefined" color="primary" mat-raised-button (click)="exportAsXLSX(listTitle.id)">excel</button>
+                    <button color="primary" mat-raised-button (click)="cancel()">목록</button>
+                    <button color="primary" mat-raised-button *ngIf="loginUser.id == deploy.id" (click)="deleteDeploy(deploy.deployNo)">삭제</button>
+                </div>
+            </div>
+        </div>
+        <div class="card overflow-auto -mt-16 card-title card-extra" style="margin-top: 1em;" >
+            <div class="bg-app-bar px-6 h-16 sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <div class="content-outline">
+                    <div class="deploy-content">
+                        <p class="deploy-title title-extra">작성자</p>
+                        <h6 class="middle-content">{{deploy.writer}}</h6>
+                    </div>
+                    <div class="deploy-content">
+                        <p class="deploy-title title-extra">팀</p>
+                        <h6 class="middle-content">{{deploy.team}}</h6>
+                    </div>
+                    <div class="deploy-content">
+                        <p class="deploy-title title-extra">작성일</p>
+                        <h6 class="middle-content">{{deploy.deployDate}}</h6>
+                    </div>
+                    <div class="deploy-content">
+                        <p class="deploy-title title-extra">배포예정일</p>
+                        <h6 class="middle-content">{{deploy.expectedDate}}</h6>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="card overflow-auto -mt-16 card-extra" style="margin-top: 1em;" *ngIf="deploy.deployContent != null">
+            <div class="bg-app-bar px-6 h-16 sticky left-0  outline-extra" fxLayout="row" fxLayoutAlign="start center">
+                <div> 
+                    <div class="content-extra">
+                        <div class="extra-inner">
+                            <p class="deploy-title">내용</p>
+                        </div>
+                        <quill-view-html [content]="deploy.deployContent" theme="snow"></quill-view-html>
+                    </div> 
+                </div> 
+            </div> 
+        </div>
+
+        <div id = "deployContent" *ngIf="files?.length != 0">
+            <div id = "fileBox">
+                <div class="file-title">jar</div>
+                <div class="file-contents">
+                    <ul>
+                        <li *ngFor="let file of files"><img width="15" height="15" src="assets/img/clip.png"><a href="{{ ngEncode(fileUrl+file.name) }}">{{file.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="zipName !== undefined">       
+            <div id="scriptWrap">       
+                <table class="table w-full" >
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">구분</th>
+                            <th style="width: 100px;">타입</th>
+                            <th style="width: 80%;">소스경로</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let scriptView of scriptViews | paginate: {itemsPerPage: itemsPerPage , currentPage: p, totalItems: totalItems}">
+                            <td>{{scriptView.category}}</td>
+                            <td>{{scriptView.fileType}}</td>
+                            <td>{{scriptView.localPath}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="paginate-box">
+                <pagination-controls (pageChange)="getPage(p =$event)" previousLabel="" nextLabel="" responsive="true">
+                </pagination-controls>
+            </div>
+
+            <div id="item">
+                Items per Page:
+                <select (change)="handlePageSizeChange($event)">
+                    <option *ngFor="let itemsPerPage of itemsPerPages" >
+                    {{ itemsPerPage }}
+                    </option>
+                </select>
+            </div> 
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>

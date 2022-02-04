@@ -1,0 +1,146 @@
+.schedule td {
+  width: 60px;
+  height: 40px;
+  border-top: 1px solid #dee2e6;
+}
+
+.schedule th {
+  border-top: 1px solid #dee2e6;
+  height: 40px;
+}
+
+.schedule {
+  width: 400px;
+  text-align: center;
+  height: 376.2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 24px 0 0 24px;
+  position: absolute;
+  background-color: white;
+  --tw-shadow: var(--elevation-z8);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border-radius: 0.25rem;
+}
+
+.schedule table {
+  width: 400px;
+}
+
+.schedule h4 {
+  background: linear-gradient(to top, #ffe400 50%, transparent 50%);
+  width: 110px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font: 500 18px/26px var(--font);
+  letter-spacing: -0.014em;
+}
+
+#notice {
+  width: 750px;
+  margin-top: 24px;
+  margin-left: 465px;
+  user-select: none;
+  margin-bottom: 70px;
+ 
+}
+
+#notice .notice_title {
+  min-width: 58%;
+}
+
+#notice .notice_writer{
+  max-width: 8%;
+  justify-content: center;
+}
+#notice .notice_team{
+  max-width: 10%;
+  justify-content: center;
+}
+#notice .notice_regdate {
+  max-width: 24%;
+  justify-content: center;
+}
+
+#notice mat-header-cell {
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+}
+
+#notice mat-cell {
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.count {
+  cursor: pointer;
+}
+
+.count:hover {
+  color: #5c77ff;
+  text-decoration: underline;
+}
+
+.card {
+  border: none;
+}
+#noticeTable img{
+  margin-left: 5px;
+}
+
+#notice h2 {
+  background: linear-gradient(to top, #66b8dfb4 50%, transparent 50%);
+  width: 90px;
+  text-align: center;
+}
+
+.deploy td {
+  width: 60px;
+  height: 50px;
+  border-top: 1px solid #dee2e6;
+}
+
+.deploy td:nth-child(1) {
+  font-weight: bold;
+}
+
+.deploy th {
+  border-top: 1px solid #dee2e6;
+  height: 40px;
+}
+
+.deploy {
+  position: relative;
+  //top:500px;
+  left:24px;
+  width: 800px;
+  text-align: center;
+  overflow-x: hidden;
+  //margin: 270px 0 30px 24px;
+  background-color: white;
+  --tw-shadow: var(--elevation-z8);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border-radius: 0.25rem;
+  margin-bottom: 50px;
+}
+
+.deploy table {
+  width: 800px;
+}
+
+.deploy h4 {
+  background: linear-gradient(to top, #73d39eb6 50%, transparent 50%);
+  width: 90px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font: 500 18px/26px var(--font);
+  letter-spacing: -0.014em;
+}
+
+
+

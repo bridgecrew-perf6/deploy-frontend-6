@@ -1,0 +1,44 @@
+<vex-secondary-toolbar *ngIf="boardNo == null" current="공지사항 등록">
+  <vex-breadcrumbs [crumbs]="['Notice','Notice-Write']"></vex-breadcrumbs>
+</vex-secondary-toolbar>
+<vex-secondary-toolbar *ngIf="boardNo != null" current="공지사항 수정">
+  <vex-breadcrumbs [crumbs]="['Notice','Notice-Update']"></vex-breadcrumbs>
+</vex-secondary-toolbar>
+<div id="noticeWrap">
+	<div id="formGroup" [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
+		<div id="titleWrap" fxFlex="auto" fxLayout="column">
+			<mat-form-field fxFlex="grow" appearance="standard">
+				<mat-label>제목:</mat-label>
+				<input  formControlName="title"  matInput maxlength="30"    #title >
+				<mat-error *ngIf="form.get('title').hasError('required')">제목을 입력해 주세요.</mat-error>
+				<mat-error *ngIf="form.get('title').hasError('pattern')">첫글자는 공백을 제외해서 입력해 주세요.</mat-error>
+			</mat-form-field>
+		</div>
+
+		<div id="fileWrap">
+			<div>
+				<input type="file" multiple id="file" #fileUploader  (change)="selectFiles($event)" style="display: none;">
+				<label id="fileLabel" for="file" >파일 선택</label>
+			</div>
+			<div *ngIf="display=='block'" id="fileBox" >
+				<ul *ngFor="let fileList of files" >
+					<li *ngFor="let file of fileList" ><button  (click)="close($event.srcElement.parentElement.textContent)" class="close_btn">x</button>{{file.name}}</li>
+				</ul>
+			</div>
+		</div>
+
+
+		<div id="contentWrap">
+			<quill-editor #content @fadeInUp formControlName="content"  [styles]="{ flex: '1 1 auto' }" >
+		</quill-editor>
+		</div>
+
+		<div id="buttonWrap">
+			<button color="primary" mat-raised-button (click)="cancel()">취소</button>
+			<button color="primary" mat-raised-button  *ngIf="boardNo==null" (click)="insert(form,title)">등록</button>
+			<button color="primary" mat-raised-button  *ngIf="boardNo!=null" (click)="update(form,title)">수정</button>
+		</div>
+	</div>
+</div>
+<div id="loader" [ngClass]="status=='wait'?'on':'off'"></div>
+

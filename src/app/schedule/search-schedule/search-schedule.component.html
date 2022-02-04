@@ -1,0 +1,64 @@
+<div class="btns">
+  <h2 mat-dialog-title style="height: 25px">개인별 일정</h2>
+  <img src="/assets/img/demo/close.png" class="close" mat-dialog-close />
+</div>
+
+<div mat-dialog-content>
+  <mat-form-field appearance="standard">
+    <mat-label>이름</mat-label>
+    <input matInput [formControl]="name" (keyup.enter)="search()" />
+    <mat-error>해당 이름의 팀원이 없습니다</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="search()" class="search">
+    검색
+  </button>
+  <button mat-raised-button (click)="showMine()" class="search">본인</button>
+</div>
+
+<div mat-dialog-content style="overflow: hidden">
+  <ul class="team">
+    <li (click)="showAll()" [class.on]="menu == '전체'">전체</li>
+    <li
+      *ngFor="let team of data.teamList"
+      (click)="showUser(team)"
+      [ngClass]="menu == team.codeName ? 'on' : 'off'"
+    >
+      {{ team.codeName }}
+    </li>
+  </ul>
+  <div class="names">
+    <form [formGroup]="form">
+      <mat-checkbox
+        color="primary"
+        *ngFor="let user of userList; let i = index"
+        class="chk"
+        [value]="user"
+        (change)="onChange($event, i)"
+        [checked]="user.chk"
+      >
+        {{ user.name }}
+      </mat-checkbox>
+    </form>
+  </div>
+  <div class="btns">
+    <div class="chkwrap">
+      <mat-checkbox
+        color="accent"
+        *ngFor="let user of form.value.users"
+        labelPosition="before"
+        class="chkbox"
+        indeterminate="true"
+        (click)="deleteName(user)"
+        >{{ user.name }}
+      </mat-checkbox>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="submit()"
+      style="height: 36px"
+    >
+      보기
+    </button>
+  </div>
+</div>

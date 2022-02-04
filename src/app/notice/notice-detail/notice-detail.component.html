@@ -1,0 +1,67 @@
+<vex-page-layout>
+	<vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.container]="layoutCtrl.value === 'boxed'"
+         [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+         class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">공지사항</h1>
+        <vex-breadcrumbs [crumbs]="['Notice','Notice-Detail']"></vex-breadcrumbs>
+      </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content>
+		<div id="noticeBox">
+	<div id="noticeHeader">
+		<dl id="noticeTitle" class="notice_dl">
+			<dt class="notice_dt">제목</dt>
+			<dd>{{notice.title}}</dd>
+		</dl>
+		<dl id="noticeWriter">
+			<dt>작성자</dt>
+			<dd>{{notice.writer}}</dd>
+		</dl>
+		<dl id="viewCount">
+			<dt>조회수</dt>
+			<dd>{{notice.viewCount}}</dd>
+		</dl>
+		
+		<dl id="noticeRegdate" class="notice_dl">
+			<dt class="notice_dt">등록일</dt>
+			<dd>{{notice.regdate}}</dd>
+		</dl>
+		<dl id="noticeUpdate" class="notice_dl">
+			<dt>수정일</dt>
+			<dd *ngIf="notice.updateDate!=null">{{notice.updateDate}}</dd>
+			<dd *ngIf="notice.updateDate==null"> </dd>
+		</dl>
+		
+		<dl id="phone">
+			<dt>전화번호</dt>
+			<dd>{{notice.phone}}</dd>
+		</dl>
+	</div>
+	<div id="noticeContent">
+		<div *ngIf="display=='block'" id="fileBox">
+			<ul>
+				<li id="attachments">첨부파일</li>
+			</ul>
+			<ul>
+				<li *ngFor="let file of files"><img width="15" height="15"  src="assets/img/clip.png"> <a href="{{ ngEncode(url+file.name)}}">{{file.name}}</a></li>			
+			</ul>
+		</div>
+		<div class="ql-container ql-snow" style="border-width: 0;">
+			<div id="contentBox" class="ql-editor" >
+				<quill-view-html [content]="notice.content" theme="snow"></quill-view-html>
+				
+			</div>
+		</div>
+	</div>
+	<div id="noticeFooter">
+		<button color="primary" mat-raised-button (click)="selectList()"  class="btn">목록</button>
+		<button color="primary" mat-raised-button *ngIf="loginUser.id==notice.id" (click)="updateNotice(boardNo)"  class="btn btn_common">수정</button>
+		<button color="primary" mat-raised-button *ngIf="loginUser.id==notice.id"  (click)="deleteNotice(boardNo)"  class="btn btn_common">삭제</button>
+	</div>
+</div>
+
+  </vex-page-layout-content>
+</vex-page-layout>

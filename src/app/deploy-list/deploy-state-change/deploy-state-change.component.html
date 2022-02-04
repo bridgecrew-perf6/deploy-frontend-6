@@ -1,0 +1,33 @@
+<div class="dialog-outline">
+    <div class="title-outline">
+        <h2 mat-dialog-title>배포상태</h2>
+        <div><배포번호 : {{deployNo}}></div>
+    </div>
+    <mat-dialog-content [formGroup]="stateForm">
+        <div class="title-outline">
+            <mat-checkbox [checked]="selected === 1" (change)="selected = 1" formControlName="deployReady" color="primary">
+                배포준비
+            </mat-checkbox>
+            <mat-checkbox [checked]="selected === 2" (change)="selected = 2" formControlName="deployComplete" color="primary">
+                배포완료
+            </mat-checkbox>
+        </div>
+        <div class="content-outline">
+            <mat-label class="content-title">참고사항</mat-label>
+        </div>
+            <div id="state-content" class="content-title">
+                    {{stateReason}}
+            </div>
+            <mat-form-field appearance="standard" class="content">
+                <mat-label class="content-title">참고사항 추가</mat-label>
+                <input matInput formControlName="stateReason">
+            </mat-form-field>
+    </mat-dialog-content>
+    <div>
+        <mat-dialog-actions class="button-outline-dialog">
+            <button mat-raised-button color="primary" mat-dialog-close>취소</button>
+            <button mat-raised-button color="primary" (click)="onSubmit()">등록</button>
+        </mat-dialog-actions>
+    </div>
+</div>
+

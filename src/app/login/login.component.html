@@ -1,0 +1,45 @@
+<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <div @fadeInUp class="card overflow-hidden w-full max-w-xs">
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="fill-current text-center">
+        <img class="w-16" src="assets/img/logo/logo.gif" style="width: 150px;height: 40px;">
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <h2 class="title m-0">환영합니다.</h2>
+      <h4 class="body-2 text-secondary m-0">아래의 조건을 작성해 주세요.</h4>
+    </div>
+
+    <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px" (keyup.enter)="send(form,id,password)">
+      <div fxFlex="auto" fxLayout="column">
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>ID</mat-label>
+          <input #id formControlName="id" matInput required maxlength="20">
+          <mat-error *ngIf="form.get('id').hasError('required')">아이디를 입력해 주세요.</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="grow" appearance="standard">
+          <mat-label>Password</mat-label>
+          <input #password [type]="inputType" formControlName="password" matInput required maxlength="20">
+          <mat-error *ngIf="form.get('password').hasError('required')">비밀번호를 입력해 주세요.</mat-error>
+          <mat-error *ngIf="form.get('password').hasError('checkError')">아이디 또는 비번이 올바르지 않습니다.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" id="findBox">
+        
+        <a [routerLink]="['/forgot-id']" class="caption">아이디 찾기</a>
+        <a [routerLink]="['/forgot-password']" class="caption">비밀번호 찾기</a>
+      </div>
+
+      <button (click)="send(form,id,password)" color="primary" mat-raised-button type="button" >
+        로그인
+      </button>
+
+      <p class="text-secondary text-center">
+        계정이 없으십니까?<br/>
+        <a [routerLink]="['/register']">여기를 클릭하세요.</a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="modal-detail-extra">
+    <div class="fileBtn"  *ngIf="zipName !== undefined"> 
+        <a href="{{ ngEncode(url+zipName) }}">zip</a>
+    </div>
+    <button *ngIf="zipName !== undefined" color="primary" mat-raised-button (click)="exportAsXLSX(this.deployTitle)" style="height: 42px;width: 75.14px;"> excel </button>
+</div>
+
+<div class="deploy-content" style="padding-left: 1em; padding-bottom: 1em;">
+    <div class="modal-detail">
+        <p class="deploy-title">제목</p>  
+        <h6>{{deployTitle}}</h6>
+    </div>
+    <div class="modal-detail-date">
+        <p class="deploy-title title-extra">배포예정일</p>
+        <h6 class="middle-content">{{expectedDeployDate}}</h6>
+    </div>
+</div> 
+
+<div class="deploy-content content-extra"  *ngIf="deploy.deployContent != undefined">
+    <p class="deploy-title">내용</p>
+    <div [innerHtml]="deploy.deployContent"></div>
+</div> 
+<div id = "deployContent" *ngIf="files?.length != 0">
+    <div id = "fileBox">
+        <div class="file-title">jar</div>
+        <div class="file-contents">
+            <ul>
+                <li *ngFor="let file of files"><img width="15" height="15" src="assets/img/clip.png"><a href="{{ ngEncode(fileUrl+file.name) }}">{{file.name}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div> 
+<div *ngIf="zipName !== undefined">       
+    <div id="scriptWrap">       
+        <table class="table w-full" >
+            <thead>
+                <tr>
+                    <th style="width: 100px;">구분</th>
+                    <th style="width: 100px;">타입</th>
+                    <th style="width: 80%;">소스경로</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let scriptView of scriptViews | paginate: {itemsPerPage: itemsPerPage , currentPage: p, totalItems: totalItems}">
+                    <td>{{scriptView.category}}</td>
+                    <td>{{scriptView.fileType}}</td>
+                    <td>{{scriptView.localPath}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="paginate-box">
+        <pagination-controls (pageChange)="getPage(p =$event)" previousLabel="" nextLabel="" responsive="true">
+        </pagination-controls>
+    </div>
+</div> 
+
+
+<div class="deploy-content">
+    <div mat-dialog-actions class="cancel-btn">
+        <button mat-raised-button color="primary" mat-dialog-close>취소</button>
+    </div>
+</div>

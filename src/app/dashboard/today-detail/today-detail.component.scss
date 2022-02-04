@@ -1,0 +1,27 @@
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table {
+  border: 1px;
+  text-align: center;
+}
+
+.table th {
+  border-bottom: none;
+}
+
+.content {
+  max-height: 400px;
+}
+
+.complete {
+  font-size: 13.5px;
+  margin-left: 5px;
+}
+
+.table th:first-child,
+td:first-child {
+  width: 200px;
+}

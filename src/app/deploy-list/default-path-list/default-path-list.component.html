@@ -1,0 +1,35 @@
+<vex-page-layout>
+<vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.container]="layoutCtrl.value === 'boxed'"
+         [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+         class="w-full flex flex-col sm:flex-row justify-between">
+    <div>
+        <h1 class="title mt-0 mb-1">기본경로</h1>
+        <vex-breadcrumbs [crumbs]="['Deploy','Default-Path-List']"></vex-breadcrumbs>
+    </div>
+    </div>
+</vex-page-layout-header>
+<vex-page-layout-content>
+<div id="scriptWrap">       
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th style="width: 20%;">타입</th>
+                <th style="width: 80%;">경로</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let defaultPath of defaultPaths">
+                <td>{{defaultPath.id}}</td>
+                <td>{{defaultPath.path}}</td>
+            </tr>
+        </tbody>
+  
+    </table>
+    <div class="button-outline">
+        <button (click)="cancel()" mat-flat-button color="primary">목록</button>
+    </div>
+</div>
+
+</vex-page-layout-content>
+</vex-page-layout>

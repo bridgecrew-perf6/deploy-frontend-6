@@ -1,0 +1,94 @@
+<div class="h-full flex flex-col" (resized)="onResized($event)">
+  <div class="calendar-bg relative text-contrast-white flex-none">
+    <div
+      class="
+        bg-contrast-black
+        opacity-25
+        absolute
+        top-0
+        left-0
+        right-0
+        bottom-0
+        z-0
+        w-full
+        h-full
+      "
+    ></div>
+    <div class="container px-6 h-40 z-10 relative flex items-end">
+      <div
+        class="flex-auto flex flex-col sm:flex-row justify-between items-center"
+      >
+        <div>
+          <button (click)="showAll()" class="date">전체</button>
+          <button (click)="toggleTeam()" class="date" #teamButton>팀</button>
+          <div
+            id="teamDiv"
+            #teamDiv
+            [@dropdown]="toggle"
+            [class.toggle]="!toggle"
+          >
+            <div
+              class="
+                fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event
+              "
+              *ngFor="let item of teamList; let i = index"
+            >
+              <div
+                class="fc-event-main"
+                #team
+                (click)="showTeam(item)"
+                [ngStyle]="{ 'background-color': teamColor(team, i) }"
+              >
+                {{ item.codeName }} 팀
+              </div>
+            </div>
+            <div
+              class="
+                fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event
+                mine
+              "
+            >
+              <div class="fc-event-main" (click)="showMine()">진행중 본인</div>
+            </div>
+            <div
+              class="
+                fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event
+                complete
+              "
+            >
+              <div class="fc-event-main" (click)="showEnd()">완료된 일정</div>
+            </div>
+          </div>
+          <button (click)="showOne()" class="date">개인</button>
+        </div>
+
+        <div class="center">{{ viewDate }}</div>
+
+        <div class="actions flex flex-col sm:flex-row justify-end items-center">
+          <div>
+            <button (click)="showToday()" class="date">오늘</button>
+          </div>
+          <div class="chevrons">
+            <button mat-icon-button (click)="showPrev()">
+              <mat-icon [icIcon]="icChevronLeft"></mat-icon>
+            </button>
+            <button mat-icon-button (click)="showNext()">
+              <mat-icon [icIcon]="icChevronRight"></mat-icon>
+            </button>
+          </div>
+          <div>
+            <button (click)="showMonth()" class="date">월</button>
+            <button (click)="showWeek()" class="date">주</button>
+            <button (click)="showDay()" class="date">일</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <vex-scrollbar class="px-0 shadow flex-auto relative" vexContainer>
+    <div class="app-calendar">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </vex-scrollbar>
+</div>

@@ -1,0 +1,26 @@
+<div>
+    <h2 id="user list" #listTitle>Excel File Download Sample</h2>
+    <!--타이틀에 id로 엑셀 파일명 지정해주시고 지역변수 설정해주신다음에 버튼 클릭시 메서드 호출시에 id값 넣어주시면 됩니다.-->
+    <table>
+      <thead class="sample_excel_download_thead">
+      <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+      </tr>
+      </thead>
+      <tbody class="sample_excel_download_tbody">
+      <tr *ngFor="let user of users">
+        <td>{{user.id}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.email}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <button class="xlsx_way" (click)="exportAsXLSX(listTitle.id)">Download User List As Excel File</button>
+    <br/>
+    <button class="excel_js_way" (click)="exportToExcel(listTitle.id)">Download Styled Excel File </button>
+</div>
+

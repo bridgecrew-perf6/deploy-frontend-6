@@ -1,0 +1,90 @@
+<vex-page-layout>
+	<vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+    <div [class.container]="layoutCtrl.value === 'boxed'"
+         [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+         class="w-full flex flex-col sm:flex-row justify-between">
+      <div>
+        <h1 class="title mt-0 mb-1">공지사항</h1>
+        <vex-breadcrumbs [crumbs]="['Notice']"></vex-breadcrumbs>
+	  </div>
+	  <div id="teamWrap">
+		  <button  (click)="selectNotice()"  [ngClass]="teamName=='전체'?'on':'off'">전체</button>
+		  <button *ngFor="let team of teams" (click)="selectTeamNotice(team)" [ngClass]="teamName==team.codeName?'on':'off'" >{{team.codeName}}</button>
+	  </div>
+    </div>
+  </vex-page-layout-header>
+  <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+                           [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+						   class="-mt-6">
+	<div class="card overflow-auto -mt-16">
+    	<div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+			<div id="searchBox" [formGroup]="form" (keyup.enter)="search(form)">
+				<mat-form-field class="select-field" appearance="standard">
+					<mat-label>분류</mat-label>
+					<mat-select required formControlName="type" >
+						<mat-option value="title">제목</mat-option>
+						<mat-option value="writer">작성자</mat-option>
+						<mat-option value="content">내용</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field class="search-field" appearance="standard" >
+					<mat-label>검색어를 입력해 주세요.</mat-label>
+					<input formControlName="word" matInput  #word>	
+				</mat-form-field> 
+				
+				<button color="primary" mat-raised-button (click)="search(form)" class="search_btn" (keyup.enter)="search(form)">검색</button>
+				<button color="primary" mat-raised-button (click)="initializeForm()" class="initialize_btn">초기화</button>
+				<button color="primary" mat-raised-button  routerLink="write" class="write_btn" type="button" >작성</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="boardWrap">
+
+		<table id="boardTable" class="table w-full" >
+			<thead>
+				<tr>
+					<th style="width:10%">번호</th>
+					<th style="width:45%">제목</th>
+					<th style="width:10%">작성자</th>
+					<th style="width:10%">팀</th>
+					<th style="width:15%">작성일</th>
+					<th style="width:15%">조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let notice of notices | paginate: { itemsPerPage: itemsPerPage , currentPage: p, totalItems: totalItems }"  (click)="link(notice.boardNo,form)" >
+						<td #boardNo>{{notice.boardNo}}</td>
+						<td>{{notice.title}} <img *ngIf="notice.count>0" width="15" height="15"  src="assets/img/clip.png"></td>
+						<td>{{notice.writer}}</td>
+						<td>{{notice.team}}</td>
+						<td>{{notice.regdate}}</td>
+						<td>{{notice.viewCount}}</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<div id="paginate">
+			<pagination-controls (pageChange)="getPage(p =$event)"  previousLabel=""
+                        nextLabel=""
+                        responsive="true"></pagination-controls>
+		</div>
+			<div id="item">
+				Items per Page:
+				<select (change)="handlePageSizeChange($event)" [(ngModel)]=itemsPerPage>
+					<option *ngFor="let itemsPerPage of itemsPerPages" >
+					{{ itemsPerPage }}
+					</option>
+				</select>
+   		   </div>
+			
+				
+			
+	</div> 
+
+   </vex-page-layout-content>
+</vex-page-layout>
+
+
+
+
